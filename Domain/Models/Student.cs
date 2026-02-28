@@ -10,5 +10,5 @@ public class Student
 
         public string? Phone { get; set; }
 
-        public DateTime EnrollmentDate { get; set; }
+        public DateOnly EnrollmentDate { get; set; }
 }

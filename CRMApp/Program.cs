@@ -38,7 +38,7 @@ while (true)
             case "3": MentorsMenu(); break;
             case "4": GroupsMenu(); break;
             case "5": StudentGroupsMenu(); break;
-            case "6": AnalyticsMenu();break;
+            case "6": AnalyticsMenu(); break;
             case "0": return;
             default: Console.WriteLine("Интихоби нодуруст!"); break;
         }
@@ -68,7 +68,7 @@ while (true)
                 Console.Write("Ному насаб: "); Student.FullName = Console.ReadLine()!;
                 Console.Write("Email: "); Student.Email = Console.ReadLine()!;
                 Console.Write("Рақами телефон: "); Student.Phone = Console.ReadLine()!;
-                Console.Write("EnrollmentDate: "); Student.EnrollmentDate = DateTime.Now;
+                Console.Write("EnrollmentDate: "); Student.EnrollmentDate = DateOnly.Parse(Console.ReadLine()!);
                 StudentService.AddStudent(Student);
                 break;
 
@@ -93,7 +93,8 @@ while (true)
                 Console.Write("Ному насаб: "); upd.FullName = Console.ReadLine()!;
                 Console.Write("Email: "); upd.Email = Console.ReadLine()!;
                 Console.Write("Рақами телефон: "); upd.Phone = Console.ReadLine()!;
-                Console.Write("EnrollmentDate: "); upd.EnrollmentDate = DateTime.Now;
+                Console.Write("EnrollmentDate: "); upd.EnrollmentDate = DateOnly.Parse(Console.ReadLine()!);
+                StudentService.UpdateStudent(upd);
                 break;
 
             case "5":
@@ -119,7 +120,8 @@ while (true)
                 var cat = new Course();
                 Console.Write("номи курс: "); cat.Title = Console.ReadLine()!;
                 Console.Write("тавсифи курс: "); cat.Description = Console.ReadLine()!;
-                Console.Write("давомнокии курс (ҳафта): "); cat.Description = Console.ReadLine()!;
+                Console.Write("давомнокии курс (ҳафта): ");
+                cat.DurationWeeks = Convert.ToInt32(Console.ReadLine()!);
                 CourseService.AddCourse(cat);
                 break;
 
@@ -142,7 +144,8 @@ while (true)
                 var upd = new Course();
                 Console.Write("номи курс: "); upd.Title = Console.ReadLine()!;
                 Console.Write("тавсифи курс: "); upd.Description = Console.ReadLine()!;
-                Console.Write("давомнокии курс (ҳафта): "); upd.Description = Console.ReadLine()!;
+                Console.Write("давомнокии курс (ҳафта): ");
+                upd.DurationWeeks = Convert.ToInt32(Console.ReadLine()!);
                 CourseService.UpdateCourse(upd);
                 break;
 
@@ -223,8 +226,8 @@ while (true)
                 Console.Write("Номи гурӯҳ: "); group.GroupName = Console.ReadLine()!;
                 Console.Write("ID Курси вобаста: "); group.CourseId = Convert.ToInt32(Console.ReadLine()!);
                 Console.Write("ID Мураббӣ: "); group.MentorId = Convert.ToInt32(Console.ReadLine()!);
-                Console.Write("Санаи оғоз (yyyy-MM-dd): "); group.StartDate = Convert.ToDateTime(Console.ReadLine()!);
-                Console.Write("Санаи анҷом (yyyy-MM-dd): "); group.EndDate = Convert.ToDateTime(Console.ReadLine()!);
+                Console.Write("Санаи оғоз (yyyy-MM-dd): "); group.StartDate = DateOnly.Parse(Console.ReadLine()!);
+                Console.Write("Санаи анҷом (yyyy-MM-dd): "); group.EndDate = DateOnly.Parse(Console.ReadLine()!);
                 GroupService.AddGroup(group);
                 break;
 
@@ -249,8 +252,8 @@ while (true)
                 Console.Write("Номи гурӯҳ: "); upd.GroupName = Console.ReadLine()!;
                 Console.Write("ID Курси вобаста: "); upd.CourseId = Convert.ToInt32(Console.ReadLine()!);
                 Console.Write("ID Мураббӣ: "); upd.MentorId = Convert.ToInt32(Console.ReadLine()!);
-                Console.Write("Санаи оғоз (yyyy-MM-dd): "); upd.StartDate = Convert.ToDateTime(Console.ReadLine()!);
-                Console.Write("Санаи анҷом (yyyy-MM-dd): "); upd.EndDate = Convert.ToDateTime(Console.ReadLine()!);
+                Console.Write("Санаи оғоз (yyyy-MM-dd): "); upd.StartDate = DateOnly.Parse(Console.ReadLine()!);
+                Console.Write("Санаи анҷом (yyyy-MM-dd): "); upd.EndDate = DateOnly.Parse(Console.ReadLine()!);
                 GroupService.UpdateGroup(upd);
                 break;
 
@@ -281,7 +284,7 @@ while (true)
                 Console.Write("ID Гурӯҳ: "); sg.GroupId = Convert.ToInt32(Console.ReadLine()!);
                 Console.WriteLine("Status интихоб кунед: 1=Фаъол, 2=Ихроҷшуда, 3=Хатмкарда");
                 int statusInput = Convert.ToInt32(Console.ReadLine()!);
-                StudentStatus status = (StudentStatus)statusInput;
+                sg.Status = (StudentStatus)statusInput;
                 StudentGroupService.AddStudentToGroup(sg);
                 break;
 
@@ -368,8 +371,7 @@ while (true)
             case "7":
                 Console.WriteLine("Шумораи донишҷӯён дар ҳар курс:");
                 foreach (var kv in CourseService.GetStudentsPerCourse())
-                    Console.WriteLine($"  Гурӯҳ {kv.CourseId}: {kv.StudentCount} донишҷӯ");
-                break;
+                    Console.WriteLine($"  Курс {kv.CourseId}: {kv.StudentCount} донишҷӯ"); break;
 
             case "8":
                 Console.WriteLine($"Курси маъмултарин: {CourseService.GetMostPopularCourse()}");
